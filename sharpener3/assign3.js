@@ -4,4 +4,4 @@ secondItem.style.backgroundColor="green"
 
 let thirdItem=document.querySelector('.list-group-item:nth-child(3)');  
 console.log(thirdItem); 
-thirdItem.style.color="transparent"
+thirdItem.style.color="transparent";
