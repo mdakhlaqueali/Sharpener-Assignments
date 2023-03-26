@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="edit.css">
+</head>
+<body>
+    <form onsubmit="SaveToLocalStorage(event)">
+        <fieldset>
+        <h2>Book a call</h2><br>
+        <p>Book a call and our representative will call within 1 hr of selected time</p><br>
+        <label> name</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label> email</label><br>
+        <input type="email" id= "email" name="email" required><br>
+        <label> phone</label><br>
+
+        <input type="tel" id="telp" name="telp" required><br>
+        <label>time for call</label><br>
+        <input type="datetime-local" id="time" name="time" required>
+        <br><br>
+        
+        <button>GET A CALL</button>
+        </fieldset>
+    </form>
+    <ul id='listOfitems'></ul>
+</body>
+</html>
+
+<script src="edit.js"></script>
