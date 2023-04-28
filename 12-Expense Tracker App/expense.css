@@ -1,0 +1,54 @@
+/* Center the form and table */
+form,
+table {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+/* Style the form inputs */
+form input,
+form select {
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+}
+
+/* Style the submit button */
+form input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+/* Style the table */
+table {
+  border-collapse: collapse;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Style the table header */
+thead {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Style the table cells */
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* Style the delete and edit buttons */
+td button {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+td button:hover {
+  background-color: #d32f2f;
+}
