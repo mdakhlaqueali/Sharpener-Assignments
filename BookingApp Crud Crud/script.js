@@ -56,7 +56,7 @@ function display(res){
         
     let editButton = document.createElement("button");
     editButton.textContent = "Edit";
-    // editButton.addEventListener("click", editUser);
+    editButton.addEventListener("click", editUser);
     editCell.append(editButton);
 
     newRow.append(nameCell, emailCell, deleteCell, editCell);
@@ -77,3 +77,22 @@ function deleteUser(event) {
             console.log(error);
         })
 }
+
+function editUser(event) {
+    let row = event.target.parentNode.parentNode;
+    let userId = row.getAttribute("data-id");
+    // Fetch the user object from the API using its _id
+    axios.get(`https://crudcrud.com/api/3b2934afab514f36824a66b7135edb7a/myData/${userId}`)
+        .then(function(response) {
+            let user = response.data;
+
+            // Populate the form fields with the user data
+            document.querySelector("#name").value = user.name;
+            document.querySelector("#email").value = user.email;
+            // To delete the row
+            deleteUser(event);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
+    }
