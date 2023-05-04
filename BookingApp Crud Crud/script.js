@@ -8,9 +8,9 @@
             email
         }
         
-        axios.post("https://crudcrud.com/api/7cf69902ed0f444093b231ab233fe539/appointData", obj)
+        axios.post("https://crudcrud.com/api/3b2934afab514f36824a66b7135edb7a/myData", obj)
             .then(function(response){
-                display(response.data);
+                display([obj])
                 console.log(response);
             })
             .catch(function(error){
@@ -18,18 +18,32 @@
                 console.log(error)
             })
     }
+//to get the data every time page is loaded, we add a event
+//listener to the window or to the DOM you can say
+
+window.addEventListener("DOMContentLoaded", function(){
+    axios.get("https://crudcrud.com/api/3b2934afab514f36824a66b7135edb7a/myData")
+    .then(function(response){
+        console.log(response.data);
+        display(response.data)
+    })
+    .catch(function(error){
+        console.log(error)
+    })
+})
+
 
 function display(res){
     let parent = document.querySelector("tbody");
     let newRow;
-    parent.innerHTML = '';
-    
+    res.forEach(function(el) {
     newRow = document.createElement("tr");
     let nameCell = document.createElement("td");
-    nameCell.textContent = res.name;
+    nameCell.textContent = el.name;
     let emailCell = document.createElement("td");
-    emailCell.textContent = res.email;
+    emailCell.textContent = el.email;
 
-        newRow.append(nameCell, emailCell);
-        parent.appendChild(newRow);
+    newRow.append(nameCell, emailCell);
+    parent.appendChild(newRow);
+    });
 }
