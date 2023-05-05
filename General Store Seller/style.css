@@ -1,0 +1,44 @@
+h1{
+    margin: auto;
+    max-width: 300px;
+    padding-bottom: 20px;
+}
+form, table{
+    margin: auto;
+    max-width: 500px;
+}
+form input{
+    display: block;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+}
+/* Style the submit button */
+#submit{
+    background-color: lightgreen;
+    color: white;
+    cursor: pointer;
+}
+
+table{
+    border-collapse: collapse;
+    margin-top: 20px;
+    width: 100%;
+}
+/* Style the table cells */
+td {
+    border: 1px solid rebeccapurple;
+    padding: 4px;
+}
+/* Style the delete and edit buttons */
+tr button {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+tr button:hover {
+    background-color: #d32f2f;
+}

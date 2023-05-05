@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker App</title>
+    <style>
+        /* Center the form and table */
+       form,
+       table {
+            margin: 0 auto;
+            max-width: 300px;
+        }
+        form input,
+        form select {
+            display: block;
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+        }
+        /* Style the submit button */
+        #btn {
+            background-color: lightgreen;
+            color: white;
+            cursor: pointer;
+        }
+        table{
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        /* Style the table cells */
+        td {
+            border: 1px solid rebeccapurple;
+            padding: 4px;
+        }
+        /* Style the delete and edit buttons */
+        tr button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        tr button:hover {
+            background-color: #d32f2f;
+        }
+
+
+    </style>
+</head>
+<body>
+    <form id="form" onsubmit="saveToCrudCrud(event)">
+        Expense Amount:<input type="number" id="amnt"><br>
+        Description:<input type="text" id="desc"><br>
+        Expense Category:<select id="catg">
+            <option value="Fuel">Fuel</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Travel">Travel</option>
+        </select> <br>
+        <button id="btn">SUBMIT</button>
+    </form>
+    <table>
+        <tbody></tbody>
+    </table>
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+    function saveToCrudCrud(event){
+        event.preventDefault();
+        let amount = document.querySelector("#amnt").value;
+        let description = document.querySelector("#desc").value;
+        let category = document.querySelector("#catg").value;
+
+        let obj = {
+            amount,
+            description,
+            category
+        }
+        axios.post("............/expenseData", obj)
+        .then(function(response){
+                display([obj])
+                console.log(response);
+            })
+            .catch(function(error){
+                document.innerHTML = document.body.innerHTML + "<h4>Something went wrong<h4>"
+                console.log(error)
+            })
+    }
+    //to show the data every time page is reloaded
+    window.addEventListener("DOMContentLoaded", function(){
+    axios.get("............")
+    .then(function(response){
+        console.log(response.data);
+        display(response.data)
+    })
+    .catch(function(error){
+        console.log(error)
+    })
+})
+
+    function display(res){
+        let parent = document.querySelector("tbody");
+        let newRow;
+        res.forEach(function(el){
+            newRow = document.createElement("tr");
+            let amountCell = document.createElement("td");
+            amountCell.textContent = el.amount;
+            let descriptionCell = document.createElement("td");
+            descriptionCell.textContent = el.description;
+            let categoryCell = document.createElement("td");
+            categoryCell.textContent = el.category;
+
+            let deleteCell = document.createElement('td');
+            
+            let editCell = document.createElement('td');
+            
+
+            let deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.addEventListener("click", deleteExpense);
+            deleteCell.append(deleteButton);
+            
+            
+            let editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            editButton.addEventListener("click", editExpense);
+            editCell.append(editButton);
+            
+            
+
+            
+
+            newRow.append(amountCell, descriptionCell, categoryCell, deleteCell, editCell);
+            newRow.setAttribute("data-id", el._id);//set the unique id from api to the row as attribute
+            parent.appendChild(newRow);
+        });
+    }
+    
+function deleteExpense(event) {
+    let row = event.target.parentNode.parentNode;
+    let expenseId = row.getAttribute("data-id");
+
+    axios.delete(`........../expenseData/${expenseId}`)
+        .then(function(response) {
+            row.remove();
+            console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
+}
+
+function editExpense(event) {
+    let row = event.target.parentNode.parentNode;
+    let expenseId = row.getAttribute("data-id");
+    // Fetch the user object from the API using its _id
+    axios.get(`.........../expenseData/${expenseId}`)
+        .then(function(response) {
+            let expense_info = response.data;
+
+            // Populate the form fields with the user data
+           
+            document.querySelector("#amnt").value = expense_info.amount;
+            document.querySelector("#desc").value = expense_info.description;
+            document.querySelector("#catg").value = expense_info.category;
+            // To delete the row
+            deleteExpense(event);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
+    }
+
+</script>
