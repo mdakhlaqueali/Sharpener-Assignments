@@ -1,4 +1,4 @@
-let url = "https://crudcrud.com/api/4a93f3bfde5f4970bb9ac033a2fb64d3/myData";
+let url = "https://crudcrud.com/api/b041f678d9534ef0acb019b8e94640fa/myData";
 async function saveToCrudCrud(event){
     event.preventDefault();
     let item = document.querySelector("#item").value;
@@ -43,6 +43,7 @@ let newRow;
 
 res.forEach(function(el) {
 newRow = document.createElement("tr");
+newRow.setAttribute("data-id", el._id);//set the unique id from api to the every row as attribute
 let itemCell = document.createElement("td");
 itemCell.textContent = el.item;
 
@@ -87,7 +88,7 @@ deleteCell.append(deleteButton);
 
 
 newRow.append(itemCell, descriptionCell, priceCell, quantityCell, buy1Cell, buy2Cell, buy3Cell, deleteCell);
-newRow.setAttribute("data-id", el._id);//set the unique id from api to the every row as attribute
+
 parent.appendChild(newRow);
 });
 }
