@@ -1,10 +1,10 @@
-import ExpenseItem from "./components/ExepenseItem";
+import ExpenseItem from "./components/ExpenseItem";
 function App() {
   const expenses = [
-    {title: "Car Insurance", amount: 287, date: new Date(2021, 2 , 22)},
-    {title: "Medicine", amount: 1257, date: new Date(2021, 7 , 22)},
-    {title: "Fuel", amount: 1987, date: new Date(2021, 5 , 22)},
-    {title: "Electricity", amount: 2187, date: new Date(2021, 9 , 22)},
+    {title: "Car Insurance", amount: 287, date: new Date(2022, 2 , 21)},
+    {title: "Medicine", amount: 1257, date: new Date(2019, 7 , 12)},
+    {title: "Fuel", amount: 1987, date: new Date(2018, 5 , 9)},
+    {title: "Electricity", amount: 2187, date: new Date(2020, 9 , 27)},
     {title: "Grocery", amount: 787, date: new Date(2021, 10 , 22)}
 
   ]
