@@ -8,6 +8,7 @@ const App = () => {
     {title: "Grocery", amount: 787, date: new Date(2021, 10 , 22)}
 
   ]
+
   return (
     <div className="App">
       <h2>Let's get started</h2>
@@ -24,3 +25,4 @@ const App = () => {
 }
 
 export default App;
+
