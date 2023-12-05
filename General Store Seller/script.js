@@ -1,10 +1,10 @@
-let url = "https://crudcrud.com/api/5181bcad704244fd872251fa113fe6c0/myData";
+let url = "https://dummyjson.com/products";
 function saveToCrudCrud(event) {
   event.preventDefault();
   let item = document.querySelector("#item").value;
   let description = document.querySelector("#desc").value;
   let price = document.querySelector("#price").value;
-  let quantity = document.querySelector("#quant").value;
+  let quantity = document.querySelector("#quantity").value;
 
   let obj = {
     item,
