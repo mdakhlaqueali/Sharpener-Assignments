@@ -1,0 +1,16 @@
+/* style={{display:"flex", border:"1px solid blue"}} */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 5rem;
+    background-color: #07aa7b;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }

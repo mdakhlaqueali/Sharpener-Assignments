@@ -16,24 +16,27 @@ const CartProvider = props => {
           return prevItem;
         });
         if(!isPresent){
-          updatedItems.push(item)
+          // updatedItems.push(item)
+          const newItem = { ...item, quantity: 1 };
+          updatedItems = [...updatedItems, newItem];
         }
         return updatedItems;
       });
     };
     const removeItemFromCartHandler = (item) => {
-        updateItems((previousItems)=>{
-            let filterItems = previousItems.filter((prevItem)=>{
-              if(prevItem.id === item.id){
-                 prevItem.quantity--;
+        updateItems((previousItems) => {
+          let updatedItems = previousItems.map((prevItem) => {
+              if (prevItem.id === item.id) {
+                  prevItem.quantity--;
               }
-              if(prevItem.quantity!==0){
-                return prevItem;
-              }
-              
-            })
-            return filterItems;
-          })
+              return prevItem;
+          });
+  
+          // Include items where the quantity is not 0
+          updatedItems = updatedItems.filter((item) => item.quantity !== 0);
+  
+          return updatedItems;
+      });
     };
 
     const cartContext = {
