@@ -5,8 +5,8 @@ const CartProvider = props => {
     const [items, updateItems] = useState([]);
 
     const addItemToCartHandler = (item) => {
-        // updateItems([...items, item]);
-    updateItems((previousItems) => {
+      // updateItems([...items, item]);
+      updateItems((previousItems) => {
         let isPresent = false;
         let updatedItems = previousItems.map((prevItem) => {
           if(prevItem.id === item.id){
@@ -16,27 +16,24 @@ const CartProvider = props => {
           return prevItem;
         });
         if(!isPresent){
-          // updatedItems.push(item)
-          const newItem = { ...item, quantity: 1 };
-          updatedItems = [...updatedItems, newItem];
+          updatedItems.push(item)
         }
         return updatedItems;
       });
     };
     const removeItemFromCartHandler = (item) => {
-        updateItems((previousItems) => {
-          let updatedItems = previousItems.map((prevItem) => {
-              if (prevItem.id === item.id) {
-                  prevItem.quantity--;
-              }
+        updateItems((previousItems)=>{
+          let filterItems = previousItems.filter((prevItem)=>{
+            if(prevItem.id === item.id){
+               prevItem.quantity--;
+            }
+            if(prevItem.quantity!==0){
               return prevItem;
-          });
-  
-          // Include items where the quantity is not 0
-          updatedItems = updatedItems.filter((item) => item.quantity !== 0);
-  
-          return updatedItems;
-      });
+            }
+            
+          })
+          return filterItems;
+        })
     };
 
     const cartContext = {
