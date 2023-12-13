@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import { Button, Image } from "react-bootstrap";
 import classes from './Cart.module.css';
+import { useContext } from "react";
+import CartContext from "../store/CartContext";
 
 const Cart = () => {
   const [showCart, setShowCart] = useState(false);
+  const cartCtx = useContext(CartContext);
+
+  console.log("cart items:", cartCtx.items);
 
   const cartElements = [
     {
@@ -36,11 +41,7 @@ const Cart = () => {
   };
 
   const handleRemoveItem = (index) => {
-    // Logic to remove item from the cartElements array
-    const updatedCartElements = [...cartElements];
-    updatedCartElements.splice(index, 1);
-    // You may want to update the cartElements in a more persistent way, e.g., using state
-    // setCartElements(updatedCartElements);
+    cartCtx.removeItem(index);
   };
 
   return (
@@ -53,7 +54,7 @@ const Cart = () => {
         <Modal>
           <div className={classes["cart-container"]}>
             <h2>Your Cart</h2>
-            {cartElements.map((item, index) => (
+            {cartCtx.items.map((item, index) => (
               <div key={index} className={classes["cart-item"]}>
                 <Image className="imgclass" src={item.imageUrl} alt={item.title} rounded height="100px" width="100px" />
                 <p>{item.title}</p>

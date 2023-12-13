@@ -1,8 +1,15 @@
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
+import { Button } from "react-bootstrap";
+import Image from "react-bootstrap/Image";
+import { useContext } from "react";
+import CartContext from "../store/CartContext";
+
 const Showproducts = () => {
+  const cartCtx = useContext(CartContext);
+
   const productsArr = [
     {
       title: "Colors",
@@ -40,18 +47,32 @@ const Showproducts = () => {
         "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
     },
   ];
+
+  function addThisItem(item) {
+    cartCtx.addItems(item);
+  }
   return (
     <>
       <h2>Showproducts</h2>
       <Container>
         <Row>
           {productsArr.map((item) => (
-            <Col xs={6} md={4} key={item.title}>
-              <p>{item.title}</p>
-              <p>{item.price}</p>
-              <Image src={item.imageUrl} rounded />
+            <Col key={item.title}>
+              <Card className="mb-3" style={{ width: "16rem", cursor: "pointer" }}>
+                  <Card.Img variant="top" src={item.imageUrl} />
+                    <Card.Body>
+                      <Card.Title>{item.title}</Card.Title>
+                      <div className="front-each-other">
+                        <Card.Text>${item.price}</Card.Text>
+                        <Button variant="primary" onClick={() => {addThisItem(item);}}>
+                          Add To Cart
+                        </Button>
+                      </div>
+                    </Card.Body>
+              </Card>
             </Col>
           ))}
+          
         </Row>
       </Container>
     </>
