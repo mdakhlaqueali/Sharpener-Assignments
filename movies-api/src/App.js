@@ -13,7 +13,7 @@ function App() {
   setIsLoading(true);
   setError(null);
   try{
-    const response = await fetch('https://swapi.dev/api/films');
+    const response = await fetch('https://movies-api-969fd-default-rtdb.firebaseio.com/movies.json');
 
     if(!response.ok){
       throw new Error('Something went wrong!');
@@ -21,15 +21,18 @@ function App() {
 
     const data = await response.json();
 
-    const transformedMovies = data.results.map((movieData)=>{
-      return{
-        id: movieData.episode_id,
-        title: movieData.title,
-        openingText: movieData.opening_crawl,
-        releaseDate: movieData.release_date
-      };
-    });
-    setMovies(transformedMovies);
+    const loadedMovies = [];
+
+    for(const key in data){
+      loadedMovies.push({
+        id: key,
+        title: data[key].title,
+        openingText: data[key].openingText,
+        releaseDate: data[key].releaseDate
+      });
+    }
+
+    setMovies(loadedMovies);
   } catch(error){
     setError(error.message);
   }
@@ -40,8 +43,30 @@ function App() {
     fetchMoviesHandler();
   }, [fetchMoviesHandler]);
 
-  function addMovieHandler(movie){
-    console.log(movie);
+  async function addMovieHandler(movie){
+    const response = await fetch('https://movies-api-969fd-default-rtdb.firebaseio.com/movies.json',{
+      method: 'POST',
+      body: JSON.stringify(movie),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = response.json();
+    console.log(data);
+  }
+  async function deleteMovieHandler(movieId) {
+    try {
+      const response = await fetch(`https://movies-api-969fd-default-rtdb.firebaseio.com/movies/${movieId}.json`,{
+          method: 'DELETE',
+      }
+      );
+      if (!response.ok) {
+        throw new Error('Could not delete the movie.');
+      }
+      fetchMoviesHandler();
+    } catch (error) {
+      console.error('Error deleting movie:', error.message);
+    }
   }
 
   return (
@@ -53,7 +78,7 @@ function App() {
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
       <section>
-        {!isLoading && movies.length>0 && <MoviesList movies={movies}/>}
+        {!isLoading && movies.length>0 && <MoviesList movies={movies} onDeleteMovie={deleteMovieHandler}/>}
         {!isLoading && movies.length===0 && !error && <p>Found no movies.</p>}
         {!isLoading && error && <p>{error}</p>}
         {isLoading && <p>Loading...</p>}
