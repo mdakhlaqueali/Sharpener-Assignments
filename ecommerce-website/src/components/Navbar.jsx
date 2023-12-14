@@ -10,9 +10,9 @@ const MyNavbar = () => {
     <Navbar bg="dark" data-bs-theme="dark">
         <Container>
           <Nav className="me-auto">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/store">Store</NavLink>
-            <NavLink to="/about">About</NavLink>
+            <NavLink to="/" className="nav-link">Home</NavLink>
+            <NavLink to="/store" className="nav-link">Store</NavLink>
+            <NavLink to="/about" className="nav-link">About</NavLink>
           </Nav>
           <Cart/>
         </Container>
