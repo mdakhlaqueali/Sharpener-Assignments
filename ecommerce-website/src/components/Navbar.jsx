@@ -7,12 +7,13 @@ import {NavLink} from "react-router-dom";
 
 const MyNavbar = () => {
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar className="sticky-top navbar navbar-expand-lg navbar-dark bg-dark">
         <Container>
           <Nav className="me-auto">
             <NavLink to="/" className="nav-link">Home</NavLink>
             <NavLink to="/store" className="nav-link">Store</NavLink>
             <NavLink to="/about" className="nav-link">About</NavLink>
+            <NavLink to="/contact" className="nav-link">Contact</NavLink>
           </Nav>
           <Cart/>
         </Container>
