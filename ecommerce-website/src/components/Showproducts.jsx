@@ -3,10 +3,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CartContext from "../store/CartContext";
 
 const Showproducts = () => {
+  const [quantity, setQuantity] = useState(1);
   const cartCtx = useContext(CartContext);
 
   const productsArr = [
@@ -48,7 +49,8 @@ const Showproducts = () => {
   ];
 
   function addThisItem(item) {
-    cartCtx.addItems(item);
+    cartCtx.addItems({...item, quantity: Number(quantity)});
+    setQuantity(1);
   }
   return (
     <>
@@ -63,7 +65,8 @@ const Showproducts = () => {
                       <Card.Title>{item.title}</Card.Title>
                       <div className="front-each-other">
                         <Card.Text>${item.price}</Card.Text>
-                        <Button variant="primary" onClick={() => {addThisItem(item);}}>
+                        <input style={{width:"50px"}} type="number" min="1" onChange={(e) => setQuantity(e.target.value)}/>
+                        <Button variant="primary" onClick={() => {addThisItem(item, quantity);}}>
                           Add To Cart
                         </Button>
                       </div>

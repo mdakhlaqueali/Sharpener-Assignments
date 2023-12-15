@@ -23,11 +23,12 @@ const Cart = () => {
     cartCtx.removeItem(index);
   };
 
+  const styling = {backgroundColor:"white", color:"red", fontWeight:"bold", borderRadius:"10px", padding:"5px 5px"};
+
   return (
     <>
       {/* Cart Icon */}
-      <Button variant="info" onClick={handleCartIconClick}>Open Cart</Button>
-
+      <Button variant="info" onClick={handleCartIconClick}>Open Cart <span style={styling}>{cartCtx.totalQuantity}</span></Button>
       {/* Cart Modal */}
       {showCart && (
         <Modal>
@@ -38,10 +39,12 @@ const Cart = () => {
                 <Image className="imgclass" src={item.imageUrl} alt={item.title} rounded height="100px" width="100px" />
                 <p>{item.title}</p>
                 <p>Price: ${item.price}</p>
+
                 <p>Quantity: {item.quantity}</p>
                 <Button variant="danger" onClick={() => handleRemoveItem(index)}>Remove</Button>
               </div>
             ))}
+            <p>Total Amount: ${cartCtx.totalAmount.toFixed(2)}</p>
             <Button onClick={handleCloseCart}>Close Cart</Button>
           </div>
         </Modal>
