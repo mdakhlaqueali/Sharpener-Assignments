@@ -1,0 +1,69 @@
+.navbar-custom {
+    background-color: rgba(112, 80, 38, 0.588);
+
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-brand {
+    color: white;
+    /* border: 1px solid reśd; */
+
+    padding: 5px;
+    font-size: 25px;
+    letter-spacing: 1px;
+    width: 23%;
+    /* margin: auto; */
+
+    margin-left: -139px;
+    font-weight: 600;
+
+}
+
+.navbar-custom .navbar-brand:hover {
+    /* background-color: rgba(161, 224, 210, 0.832); */
+    border-radius: 40%;
+    color: black;
+    cursor: pointer;
+
+
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: white;
+    font-size: 18px;
+}
+
+/* .cart {
+    border: 1px solid white; */
+
+    /* font-size: 204px; */
+    /* letter-spacing: 2px;
+    font-family: cursive; */
+
+
+    /* margin: auto; */
+/* } */
+
+/* .cart:hover {
+    background-color: rgb(194, 239, 239);
+    border-radius: 50px;
+    color: rgb(0, 12, 11);
+    cursor: pointer;
+    padding: 12px;
+
+} */
+
+.me-auto {
+
+    /* border: 1px solid red; */
+    width: 50%;
+    margin: auto;
+
+    display: flex;
+    justify-content: space-around;
+}
+
+.me-auto:focus {
+    color: aqua;
+}
