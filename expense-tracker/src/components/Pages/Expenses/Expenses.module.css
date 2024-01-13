@@ -1,0 +1,53 @@
+/* Expenses.module.css */
+
+.expenses-container {
+  margin: 2rem auto;
+  max-width: 400px;
+}
+
+.expenses-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.expenses-container input,
+.expenses-container select,
+.expenses-container button {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.expenses-container button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.expenses-container button:hover {
+  background-color: #45a049;
+}
+
+/* Style for ExpenseDetails component */
+.expenses-container .expense-list {
+  margin-top: 2rem;
+}
+
+.expenses-container .expense-item {
+  background-color: #f4f4f4;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+}
+
+.expenses-container .expense-item p {
+  margin: 0;
+}
+
+.expenses-container .expense-item.amount {
+  font-weight: bold;
+  color: #e74c3c;
+}
