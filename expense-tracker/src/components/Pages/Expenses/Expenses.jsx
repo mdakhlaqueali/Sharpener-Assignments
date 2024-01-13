@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ExpenseDetails from "./ExpenseDetails";
 import styles from "./Expenses.module.css";
 import axios from "axios";
@@ -8,6 +8,7 @@ const Expenses = () => {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Grocery");
+  const [editingExpense, setEditingExpense] = useState(null);
 
   useEffect(() => {
     fetchExpenses();
@@ -16,25 +17,67 @@ const Expenses = () => {
   const addExpenesHandler = async (event) => {
     event.preventDefault();
 
-    const amountData = {
-      amount: +amount,
-      description,
-      category,
-    };
+    if (editingExpense) {
+      // Handle editing expense
+      const editedExpense = {
+        amount: +amount,
+        description,
+        category,
+      };
+      const url = `https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses/${editingExpense.id}.json`;
 
-    // setExpense((prevAmount) => [...prevAmount, amountData]);
-    const url =
-      "https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses.json";
+      try {
+        await axios.put(url, editedExpense);
+        setEditingExpense(null);
+        fetchExpenses();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      const newExpense = {
+        amount: +amount,
+        description,
+        category,
+      };
 
-    try {
-      await axios.post(url, amountData);
-      fetchExpenses();
-    } catch (error) {
-      console.log(error);
+      const url =
+        "https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses.json";
+
+      try {
+        await axios.post(url, newExpense);
+        fetchExpenses();
+      } catch (error) {
+        console.log(error);
+      }
     }
     setAmount("");
     setCategory("Grocery");
     setDescription("");
+  };
+
+  const editExpenseHandler = (expense) => {
+    setEditingExpense(expense);
+    setAmount(expense.amount.toString());
+    setDescription(expense.description);
+    setCategory(expense.category);
+  };
+
+  const cancelEditHandler = () => {
+    setEditingExpense(null);
+    setAmount("");
+    setDescription("");
+    setCategory("Grocery");
+  };
+
+  const deleteExpenseHandler = async (expenseId) => {
+    const url = `https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses/${expenseId}.json`;
+
+    try {
+      await axios.delete(url);
+      fetchExpenses();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const fetchExpenses = async () => {
@@ -82,9 +125,20 @@ const Expenses = () => {
           <option value="Rent">Rent</option>
           <option value="Electricity">Electricity</option>
         </select>
-        <button>Add Expenes</button>
+        <button type="submit">
+          {editingExpense ? "Update Expense" : "Add Expense"}
+        </button>
+        {editingExpense && (
+          <button type="button" onClick={cancelEditHandler}>
+            Cancel Edit
+          </button>
+        )}
       </form>
-      <ExpenseDetails expenses={expense} />
+      <ExpenseDetails
+        expenses={expense}
+        onDeleteExpense={deleteExpenseHandler}
+        onEditExpense={editExpenseHandler}
+      />
     </div>
   );
 };
