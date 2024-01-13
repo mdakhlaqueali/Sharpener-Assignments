@@ -1,6 +1,6 @@
 import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
@@ -107,6 +107,7 @@ const AuthForm = () => {
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
           </button>
+          <Link to='/forgot-password'><button>Forgot Password</button></Link>
         </div>
       </form>
     </section>

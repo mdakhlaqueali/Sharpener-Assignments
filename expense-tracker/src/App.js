@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import AuthContext from './store/auth-context';
 import {Route, Routes, Navigate} from 'react-router-dom';
 import Profile from './components/Pages/Profile';
+import ForgotPasswordPage from './components/AuthForm/ForgotPassword';
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -16,6 +17,7 @@ function App() {
       <Route path='/' element={<HomePage/>}/>
         {authCtx.isLoggedIn && <Route path="/profile" element={<Profile/>}/>}
         {!authCtx.isLoggedIn && <Route path="/login" element={<AuthForm/>}/>}
+        {!authCtx.isLoggedIn && <Route path='/forgot-password' element={<ForgotPasswordPage/>}/>}
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
     </>
