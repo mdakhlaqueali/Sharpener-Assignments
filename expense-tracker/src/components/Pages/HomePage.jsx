@@ -1,7 +1,7 @@
 const HomePage = () => {
     return(
         <div>
-            This is HomePage
+            <h1 style={{textAlign:"center"}}>Welcome to Expense Tracker</h1>
         </div>
     )
 }
