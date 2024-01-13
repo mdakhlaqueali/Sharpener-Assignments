@@ -1,12 +1,14 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../store/auth-context";
 
 const Profile = () => {
     const displayNameRef = useRef();
     const photoUrlRef = useRef();
     const navigate = useNavigate();
     const [userData, setUserData] = useState({});
+    const authCtx = useContext(AuthContext);
   
     const updateProfileHandler = async (event) => {
       event.preventDefault();
@@ -71,13 +73,38 @@ const Profile = () => {
         fetchUserData();
       }, []);
 
-  return (
+      const verifyEmailHandler = async () => {
+        const url = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBiEoVyC6pTrqMH33q1rNiN1-Ck8F40X8M";
+        const token = authCtx.token;
+        try{
+            const response = await axios.post(url, {
+                requestType: "VERIFY_EMAIL",
+                idToken:token
+            });
+
+            if(response.status === 200) {
+                console.log(response);
+            }
+            else{
+                console.log('Email not sent');
+            }
+        } catch(error){
+            console.log(error);
+        }
+    }
+
+  return(
+    <>
     <form onSubmit={updateProfileHandler}>
       <h2>Update Profile</h2>
       <input type="text" placeholder="Display Name" ref={displayNameRef} />
       <input type="text" placeholder="Photo URL" ref={photoUrlRef} />
       <button type="submit">Update Profile</button>
     </form>
+    <div>
+    <button style={{marginTop:"10px"}} onClick={verifyEmailHandler}>Verify Email</button>
+    </div>
+    </>
   );
 };
 export default Profile;
