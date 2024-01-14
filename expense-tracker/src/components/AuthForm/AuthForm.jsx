@@ -1,8 +1,8 @@
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-
-import AuthContext from '../../store/auth-context';
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from '../../store/authReducer';
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
@@ -11,13 +11,13 @@ const AuthForm = () => {
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
 
-  const authCtx = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.auth.isLogin);
 
-  const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const switchAuthModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
+    dispatch(authActions.toggle());
   };
 
   const submitHandler = (event) => {
@@ -55,7 +55,8 @@ const AuthForm = () => {
         setIsLoading(false);
         const token = response.data.idToken;
         if(token){
-          authCtx.login(token);
+          dispatch(authActions.login(token));
+          localStorage.setItem("token", token);
           console.log('login/signup success');
           navigate('/');
         }else{

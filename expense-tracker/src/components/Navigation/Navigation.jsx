@@ -1,18 +1,18 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import { useContext } from "react";
-import AuthContext from "../../store/auth-context";
+import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
+import { authActions } from "../../store/authReducer";
 
 const Navigation = () => {
-  const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const isLoggedIn = authCtx.isLoggedIn;
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state=>state.auth.isAuthenticated);
 
   const logoutHandler = () => {
-    authCtx.logout();
+    dispatch(authActions.logout());
+    localStorage.removeItem('token');
     navigate('/login');
   }
     return(
