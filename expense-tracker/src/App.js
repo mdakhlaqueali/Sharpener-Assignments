@@ -10,8 +10,9 @@ import {useSelector} from "react-redux";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
+  const isDark = useSelector((state)=> state.theme.isDarkTheme);
   return (
-    <>
+    <div className={isDark?'dark':'light'}>
     <Navigation/>
     <Routes>
       <Route path='/' element={<HomePage/>}/>
@@ -21,7 +22,7 @@ function App() {
         {isLoggedIn && <Route path='/forgot-password' element={<ForgotPasswordPage/>}/>}
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
-    </>
+    </div>
   );
 }
 

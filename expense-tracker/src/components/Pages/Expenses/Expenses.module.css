@@ -1,5 +1,15 @@
 /* Expenses.module.css */
 
+.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-theme {
+  background-color: #333333;
+  color: #ffffff;
+}
+
 .expenses-container {
   margin: 2rem auto;
   max-width: 400px;

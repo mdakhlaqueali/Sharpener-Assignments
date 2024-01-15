@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 // const initialState = {totalExpense : 0};
 const initialState = {
     expenses: [],
+    isPremium: false,
   };
 
 const expenseSlice = createSlice({
@@ -19,9 +20,12 @@ const expenseSlice = createSlice({
         setExpenses(state, action) {
             state.expenses = action.payload;
         },
+        activatePremium (state) {
+            state.isPremium = true;
+        },
     }
 });
 
-export const {addExpense, deleteExpense, setExpenses} = expenseSlice.actions;
+export const {addExpense, deleteExpense, setExpenses, activatePremium} = expenseSlice.actions;
 
 export default expenseSlice.reducer;

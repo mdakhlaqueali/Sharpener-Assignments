@@ -2,19 +2,27 @@ import React, { useState, useEffect } from "react";
 import ExpenseDetails from "./ExpenseDetails";
 import styles from "./Expenses.module.css";
 import axios from "axios";
-import { addExpense, deleteExpense, setExpenses } from "../../../store/expenseReducer";
+import { addExpense, deleteExpense, setExpenses, activatePremium } from "../../../store/expenseReducer";
+import { toggleTheme } from "../../../store/themeReducer";
 import { useDispatch,useSelector } from "react-redux";
 
 const Expenses = () => {
 
   const dispatch = useDispatch();
+  const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
   const expenses = useSelector((state) => state.expense.expenses);
+  const isPremium = useSelector((state)=> state.expense.isPremium);
   const totalAmount = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  const premiumAmount = totalAmount>10000;
 
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Grocery");
   const [editingExpense, setEditingExpense] = useState(null);
+
+  const handleThemeToggle = () => {
+    dispatch(toggleTheme());
+  }
 
   useEffect(() => {
     fetchExpenses();
@@ -114,8 +122,29 @@ const Expenses = () => {
     }
   };
 
+  const activatePremiumHandler = () => {
+    dispatch(activatePremium());
+
+  };
+
+  const downloadCSV = () => {
+    const csvContent = "data:text/csv;charset=utf-8," +
+      "Amount,Description,Category\n" +
+      expenses.map(expense => `${expense.amount},"${expense.description}",${expense.category}`).join("\n");
+  
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "expenses.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <div className={styles["expenses-container"]}>
+    <div className={`${styles['expenses-container']} ${isDarkTheme ? styles['dark-theme'] : styles['light-theme']}`}>
+      {isPremium && <button onClick={handleThemeToggle}>Toggle Theme</button>}
+      <button onClick={downloadCSV}>Download Expense</button>
       <form onSubmit={addExpenesHandler}>
         <input
           type="number"
@@ -150,7 +179,7 @@ const Expenses = () => {
         onEditExpense={editExpenseHandler}
       />
       <div>Total Amount: {totalAmount}</div>
-      {totalAmount > 10000 && <button style={{backgroundColor:"gold"}}>Activate Premium</button>}
+      {premiumAmount && <button onClick={activatePremiumHandler} style={{backgroundColor:"gold"}}>{isPremium ? 'Premium Activated' : 'Activate Premium'}</button>}
     </div>
   );
 };
