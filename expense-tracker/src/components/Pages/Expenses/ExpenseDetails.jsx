@@ -1,6 +1,6 @@
 const ExpenseDetails = (props) => {
   const expenseList = props.expenses.map((expense) => (
-    expense.id ? (
+    expense.id && (
     <li key={expense.id}>
       {expense.amount} - {expense.description} - {expense.category}
       <div style={{ display: "flex" }}>
@@ -9,7 +9,7 @@ const ExpenseDetails = (props) => {
           Delete
         </button>
       </div>
-    </li>):null
+    </li>)
   ));
 
   return <ul>{expenseList}</ul>;

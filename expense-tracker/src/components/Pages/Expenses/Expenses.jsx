@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ExpenseDetails from "./ExpenseDetails";
 import styles from "./Expenses.module.css";
 import axios from "axios";
-import { addExpense, deleteExpense, setExpenses, activatePremium } from "../../../store/expenseReducer";
+import { addExpense, deleteExpense, editExpense, setExpenses, activatePremium } from "../../../store/expenseReducer";
 import { toggleTheme } from "../../../store/themeReducer";
 import { useDispatch,useSelector } from "react-redux";
 
@@ -28,6 +28,13 @@ const Expenses = () => {
     fetchExpenses();
   }, []);
 
+  useEffect(() => {
+    // Check if totalAmount is less than 10000 and remove the dark theme
+    if (totalAmount < 10000 && isDarkTheme) {
+      dispatch(toggleTheme()); // Assuming this toggles the theme
+    }
+  }, [totalAmount, dispatch, isDarkTheme]);
+
   const addExpenesHandler = async (event) => {
     event.preventDefault();
 
@@ -43,7 +50,7 @@ const Expenses = () => {
 
       try {
         await axios.put(url, editedExpense);
-        fetchExpenses();
+        dispatch(editExpense({ id: editingExpense.id, editedExpense }));
         setEditingExpense(null);
       } catch (error) {
         console.log(error);
@@ -54,13 +61,16 @@ const Expenses = () => {
         description,
         category,
       };
-      dispatch(addExpense(newExpense));
 
       const url =
         "https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses.json";
 
       try {
-        await axios.post(url, newExpense);
+        const response = await axios.post(url, newExpense);
+        if (response.status === 200) {
+          dispatch(addExpense({newExpense, id:response.data.name}));
+          console.log(newExpense)
+        }
       } catch (error) {
         console.log(error);
       }
@@ -110,8 +120,6 @@ const Expenses = () => {
             id: key,
             ...expenseData[key],
           }));
-          console.log("expenseArray", expenseArray);
-          console.log("response-data", response.data);
           dispatch(setExpenses(expenseArray));
         }
       } else {
@@ -143,7 +151,7 @@ const Expenses = () => {
 
   return (
     <div className={`${styles['expenses-container']} ${isDarkTheme ? styles['dark-theme'] : styles['light-theme']}`}>
-      {isPremium && <button onClick={handleThemeToggle}>Toggle Theme</button>}
+      {isPremium && totalAmount>10000 && <button onClick={handleThemeToggle}>Toggle Theme</button>}
       <button onClick={downloadCSV}>Download Expense</button>
       <form onSubmit={addExpenesHandler}>
         <input
