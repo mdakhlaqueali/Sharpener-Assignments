@@ -19,8 +19,8 @@ const Cart = () => {
     setShowCart(false);
   };
 
-  const handleRemoveItem = (index) => {
-    cartCtx.removeItem(index);
+  const handleRemoveItem = (id) => {
+    cartCtx.removeItem(id);
   };
 
   const styling = {backgroundColor:"white", color:"red", fontWeight:"bold", borderRadius:"10px", padding:"5px 5px"};
@@ -41,7 +41,7 @@ const Cart = () => {
                 <p>Price: ${item.price}</p>
 
                 <p>Quantity: {item.quantity}</p>
-                <Button variant="danger" onClick={() => handleRemoveItem(index)}>Remove</Button>
+                <Button variant="danger" onClick={() => handleRemoveItem(item.fireBaseId)}>Remove</Button>
               </div>
             ))}
             <p>Total Amount: ${cartCtx.totalAmount.toFixed(2)}</p>
