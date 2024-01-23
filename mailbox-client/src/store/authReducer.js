@@ -5,7 +5,7 @@ const email = localStorage.getItem('email');
 
 const isAuthenticated = !!token;
 
-const initialAuthState = {isAuthenticated : isAuthenticated, isLogin:false, token:token, email:email };
+const initialAuthState = {isAuthenticated : isAuthenticated, isLogin:false, token:token, email:email, receiverEmail: '' };
 
 const authSlice = createSlice({
     name: 'auth',
@@ -23,6 +23,10 @@ const authSlice = createSlice({
         },
         toggle(state){
             state.isLogin = !state.isLogin;
+        },
+        setReceiver(state, action){
+            localStorage.setItem("receiverEmail", action.payload)
+            state.receiverEmail = action.payload;
         }
     }
 })

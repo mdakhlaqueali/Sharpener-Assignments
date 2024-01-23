@@ -13,6 +13,7 @@ const Navigation = () => {
   const logoutHandler = () => {
     dispatch(authActions.logout());
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
     navigate('/login');
   }
     return(
@@ -21,7 +22,12 @@ const Navigation = () => {
 
           <Nav className="me-auto">
             <Nav.Link as={Link} to='/'>Home</Nav.Link>
-            {isLoggedIn &&<Nav.Link as={Link} to='/mail'>Mail</Nav.Link>}
+            {isLoggedIn &&
+            <>
+            <Nav.Link as={Link} to='/sendmail'>Send Mail</Nav.Link>
+            {/* <Nav.Link as={Link} to='/inbox'>Inbox</Nav.Link> */}
+            </>
+            }
           </Nav>
           {isLoggedIn ? (
             <Nav>

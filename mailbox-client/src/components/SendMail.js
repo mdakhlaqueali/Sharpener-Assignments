@@ -1,17 +1,20 @@
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState } from "draft-js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { mailActions } from "../store/mailReducer";
 import { useRef, useState } from "react";
 import axios from "axios";
-import classes from "./Mail.module.css";
+import classes from "./SendMail.module.css";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/esm/Form";
+import { authActions } from "../store/authReducer";
 
-const Mail = () => {
+const SendMail = () => {
   const recieverIdRef = useRef();
   const subjectRef = useRef();
   const [message, setMessage] = useState('');
+  const dispatch = useDispatch();
 
   const email = useSelector((state) => state.auth.email);
   const senderUsername = email.split('@')[0];
@@ -23,21 +26,30 @@ const Mail = () => {
   };
   const submitHandler = (event) =>{
     event.preventDefault();
-    const recieverEmail = recieverIdRef.current.value;
+    const receiverEmail = recieverIdRef.current.value;
+    dispatch(authActions.setReceiver(receiverEmail));
     const subject = subjectRef.current.value;
-    const recieverUsername = recieverEmail.split('@')[0];
+    const receiverUsername = receiverEmail.split('@')[0];
 
     const mailDetails = {
-        to: recieverEmail,
+        from: email,
+        to: receiverEmail,
         subject: subject,
         message: message,
     };
 
-    const url = `https://mailbox-client-b0de0-default-rtdb.firebaseio.com/${senderUsername}/${recieverUsername}.json`;
-    axios.post(url, mailDetails)
+    axios.post(`https://mailbox-client-b0de0-default-rtdb.firebaseio.com/sent/${senderUsername}.json`, mailDetails)
+    axios.post(`https://mailbox-client-b0de0-default-rtdb.firebaseio.com/inbox/${receiverUsername}.json`, mailDetails)
     .then((res) => {
+        alert("Message sent successfully")
         console.log(res.data);
-        console.log("my", mailDetails);
+        dispatch(mailActions.addMail({
+          from: email,
+          to: receiverEmail,
+          subject: subject,
+          message: message,
+          id: res.data.name,
+        }))
     })
     .catch((err) => alert(err));
   }
@@ -77,4 +89,4 @@ const Mail = () => {
     </div>
   );
 };
-export default Mail;
+export default SendMail;
