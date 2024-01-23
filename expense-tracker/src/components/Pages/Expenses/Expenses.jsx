@@ -45,7 +45,7 @@ const Expenses = () => {
     if (editingExpense) {
       // Handle editing expense
       const editedExpense = {
-        amount: +amount,
+        amount: parseInt(amount),
         description,
         category,
       };
@@ -61,7 +61,7 @@ const Expenses = () => {
       }
     } else {
       const newExpense = {
-        amount: +amount,
+        amount: parseInt(amount),
         description,
         category,
       };
