@@ -55,8 +55,9 @@ const AuthForm = () => {
         setIsLoading(false);
         const token = response.data.idToken;
         if(token){
-          dispatch(authActions.login(token));
+          dispatch(authActions.login({ email: enteredEmail, token: token }));
           localStorage.setItem("token", token);
+          localStorage.setItem("email", enteredEmail)
           console.log('login/signup success');
           navigate('/');
         }else{

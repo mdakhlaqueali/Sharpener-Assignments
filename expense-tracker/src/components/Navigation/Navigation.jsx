@@ -13,6 +13,7 @@ const Navigation = () => {
   const logoutHandler = () => {
     dispatch(authActions.logout());
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
     navigate('/login');
   }
     return(

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux";
 
@@ -47,7 +47,7 @@ const Profile = () => {
       }
     };
 
-    const fetchUserData = async () => {
+    const fetchUserData = useCallback(async () => {
         // const idToken = localStorage.getItem('token');
         const idToken = token;
   
@@ -55,7 +55,7 @@ const Profile = () => {
           const url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBiEoVyC6pTrqMH33q1rNiN1-Ck8F40X8M`;
   
           try {
-            const response = await axios.post(url, { idToken });
+            const response = await axios.post(url, { idToken:idToken });
             if (response.status === 200) {
               const user = response.data.users[0];
               setUserData(user);
@@ -69,11 +69,11 @@ const Profile = () => {
             console.error('Failed to fetch user data:', error);
           }
         }
-      };
+      },[token]);
 
       useEffect(()=>{
         fetchUserData();
-      }, []);
+      }, [fetchUserData]);
 
       const verifyEmailHandler = async () => {
         const mytoken = token;

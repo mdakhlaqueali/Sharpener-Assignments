@@ -12,6 +12,7 @@ const Expenses = () => {
   const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
   const expenses = useSelector((state) => state.expense.expenses);
   const isPremium = useSelector((state)=> state.expense.isPremium);
+  const email = useSelector((state)=> state.auth.email);
   const totalAmount = expenses.reduce((acc, expense) => acc + expense.amount, 0);
   const premiumAmount = totalAmount>10000;
 
@@ -20,13 +21,16 @@ const Expenses = () => {
   const [category, setCategory] = useState("Grocery");
   const [editingExpense, setEditingExpense] = useState(null);
 
+  const username = email.split('@')[0];
+
   const handleThemeToggle = () => {
     dispatch(toggleTheme());
   }
 
   useEffect(() => {
     fetchExpenses();
-  }, []);
+  }, [username]);
+
 
   useEffect(() => {
     // Check if totalAmount is less than 10000 and remove the dark theme
@@ -46,7 +50,7 @@ const Expenses = () => {
         category,
       };
 
-      const url = `https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses/${editingExpense.id}.json`;
+      const url = `https://expense-tracker-20439-default-rtdb.firebaseio.com/${username}/${editingExpense.id}.json`;
 
       try {
         await axios.put(url, editedExpense);
@@ -63,7 +67,7 @@ const Expenses = () => {
       };
 
       const url =
-        "https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses.json";
+        `https://expense-tracker-20439-default-rtdb.firebaseio.com/${username}.json`;
 
       try {
         const response = await axios.post(url, newExpense);
@@ -97,7 +101,7 @@ const Expenses = () => {
   const deleteExpenseHandler = async (expenseId) => {
     dispatch(deleteExpense(expenseId));
 
-    const url = `https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses/${expenseId}.json`;
+    const url = `https://expense-tracker-20439-default-rtdb.firebaseio.com/${username}/${expenseId}.json`;
 
     try {
       await axios.delete(url);
@@ -107,8 +111,9 @@ const Expenses = () => {
   };
 
   const fetchExpenses = async () => {
+    console.log("Fetching expenses for username:", username);
     const url =
-      "https://expense-tracker-20439-default-rtdb.firebaseio.com/expenses.json";
+      `https://expense-tracker-20439-default-rtdb.firebaseio.com/${username}.json`;
 
     try {
       const response = await axios.get(url);
