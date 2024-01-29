@@ -28,12 +28,6 @@ const AuthForm = () => {
     const enteredPassword = passwordInputRef.current.value;
     const confirmPassword = confirmPasswordInputRef.current.value;
 
-    // if (!isLogin && enteredPassword !== confirmPassword) {
-    //   setIsLoading(false);
-    //   alert("Passwords do not match!");
-    //   return;
-    // }
-
     setIsLoading(true);
 
     let url;
@@ -60,7 +54,7 @@ const AuthForm = () => {
           localStorage.setItem("token", token);
           localStorage.setItem("email", enteredEmail);
           console.log('login/signup success');
-          navigate('/');
+          navigate("/mails/inbox");
         }else{
           console.log("Invalid token", token);
         }
@@ -79,7 +73,7 @@ const AuthForm = () => {
   return (
     <section className="d-flex flex-column align-items-center">
       <h1 className="mb-4">{isLogin ? 'Login' : 'Sign Up'}</h1>
-      <Form onSubmit={submitHandler} className='border rounded p-4'>
+      <Form onSubmit={submitHandler} className='border rounded p-4 border-primary'>
         <Form.Group className="mb-3">
           <Form.Label>Your Email</Form.Label>
           <Form.Control type='email' placeholder='Enter Email' required ref={emailInputRef} />
